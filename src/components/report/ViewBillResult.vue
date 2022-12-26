@@ -1,63 +1,70 @@
 <template>
     <div class="result-box">
-        <div class="row expenses-charts">
-            <div class="col-4">
-                <ExpensesBox mode="min" />
-            </div>
-            <div class="col-4">
-                <ExpensesBox mode="max" />
-            </div>
-            <div class="col-4">
+        <p class="bill-statistics">Estatísticas da fatura</p>
+        <div class="row">
+            <div class="col-12">
                 <ExpensesBox mode="total" />
             </div>
+            <div class="col-6">
+                <ExpensesBox mode="min" />
+            </div>
+            <div class="col-6">
+                <ExpensesBox mode="max" />
+            </div>
         </div>
+        <p class="bill-statistics">Lista de gastos</p>
         <div class="report-result">
-            <Report :expenses="response" />
+            <Report />
         </div>
     </div>
 </template>
 
 <script>
-import digitalBillApi from "@/services/api";
-import Report from "./viewBill/Report";
-import ExpensesBox from "./viewBill/ExpensesBox";
+import Report from "@/components/report/viewBill/Report";
+import ExpensesBox from "@/components/report/viewBill/ExpensesBox";
+import { defineComponent, reactive, ref, toRefs, computed } from "vue"
 
-export default {
+export default defineComponent({
     name: "ViewBillResultComponent",
+    inject: ['apiResponse'],
     components: {
-        Report,
-        ExpensesBox,
+        Report, ExpensesBox,
     },
-    props: {
-        response: Array
-    },
-    methods: {
-        // async getData() {
-        //     const response = digitalBillApi.get(
-        //         `/api/bill_statistics/?tag=${this.selectedBill}`,
-        //     ).then(response => {
-        //         this.apiResponse = response.data
-        //     });
-        //     this.apiResponse = response.data
-        // },
+    setup() {
+        const data = reactive({
+            expenses: ref([]),
+            statistics: ref([]),
+        });
+        return { ...toRefs(data) }
     },
     created() {
-        // this.getData()
+        let extractedData = this.apiResponse.value.apiData[0];
+        this.statistics = extractedData.expenses.statistics;
+        this.expenses = {
+            expenseList: extractedData.expenses.all_expenses,
+            total: this.statistics.total
+        };
     },
-    mounted() {
+    provide() {
+        return {
+            expenses: computed(() => this.expenses),
+            statistics: computed(() => this.statistics),
+        }
     }
-}
+});
 </script>
 
 <style scoped>
 .result-box {
-    margin-top: 3rem;
-    border: 1px solid white;
-    border-radius: 1rem;
-    box-shadow: 2px 2px rgb(61, 61, 61);
-    padding-top: 3rem;
-    padding-bottom: 3rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
+    
+}
+
+.report-result {
+    margin: 2rem 0rem;
+}
+
+.bill-statistics {
+    font-size: 2em;
+    font-weight: bold;
 }
 </style>

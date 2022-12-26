@@ -1,59 +1,87 @@
 <template>
     <div>
         <ViewBillForm @getQueryEvent="getQueryEvent" />
-        <div id="view-bill-result" class="row">
-            <component :is="renderResult" :response="apiResponse"></component>
+        <div id="view-bill-result" class="row dynamic-component">
+            <!-- <component :is="renderResult" :response="apiResponse"></component> -->
+            <component :is="renderResult"></component>
         </div>
     </div>
 </template>
 
 <script>
 import digitalBillApi from "@/services/api";
-import ViewBillResult from "../components/report/ViewBillResult"
-import ViewBillForm from "../components/forms/ViewBillForm"
-import NoDataFound from "../components/empty/NoDataFound.vue"
-import EmptyResult from "../components/empty/EmptyResult.vue"
-import { defineComponent, reactive, ref, toRefs } from "vue"
+import ViewBillResult from "@/components/report/ViewBillResult"
+import ViewBillResultSwitch from "@/components/report/ViewBillResult"
+import ViewBillForm from "@/components/forms/ViewBillForm"
+import NoDataFound from "@/components/empty/NoDataFound.vue"
+import EmptyResult from "@/components/empty/EmptyResult.vue"
+import { defineComponent, reactive, ref, toRefs, provide, computed } from "vue"
 
 export default defineComponent({
     name: 'ViewBillView',
     components: {
-        ViewBillForm, ViewBillResult, NoDataFound, EmptyResult
+        ViewBillForm, NoDataFound, EmptyResult,
+        ViewBillResult, ViewBillResultSwitch
     },
     setup() {
-
         const data = reactive({
             apiResponse: ref([]),
             renderResult: ref(null),
             selectedBill: ref(null),
             selectedCategories: ref(null),
         });
-
         return { ...toRefs(data) }
     },
     methods: {
-        getQueryEvent(kwargs) {
+        async getQueryEvent(kwargs) {
             this.selectedBill = kwargs.selectedBill;
             this.selectedCategories = kwargs.selectedCategories;
+            this.ignorableCaterogies = kwargs.ignorableCaterogies;
+            console.log(kwargs)
             this.renderResult = null;
             if (kwargs.selectedBill) {
-                this.renderResult = "ViewBillResult";
-                this.getData();
+                let data = await this.getData();
+                this.apiResponse = {
+                    "apiData": data
+                };
+
+                this.renderResult = this.renderResult == "ViewBillResult" ? "ViewBillResultSwitch" : "ViewBillResult";
             } else {
                 this.renderResult = "EmptyResult";
             }
-            console.log(this.apiResponse)
         },
         async getData() {
-            digitalBillApi.get("/api/expense/?bill_tag=NUBANK_2018_11")
-                .then(response => this.apiResponse = response.data)
+            // let baseUrl = `/api/bill_statistics/?tag=${this.selectedBill}&category_ignore=${this.ignorableCaterogies}`
+            // if (this.selectedCategories) {
+            //     baseUrl = baseUrl + `&category_not_in=${this.selectedCategories}`;
+            // }
+            return await digitalBillApi.get("/api/bill_statistics/", {
+                params: {
+                    tag: this.selectedBill,
+                    category_ignore: this.ignorableCaterogies,
+                    category_not_in: this.selectedCategories
+                }
+            })
+                .then(response => response.data)
+                .then(data => data)
         }
     },
+    provide() {
+        return {
+            apiResponse: computed(() => this.apiResponse)
+        }
+    }
 })
 </script>
 
 <style>
+
 main.mt-auto {
     margin-top: 10% !important;
 }
+
+.dynamic-component {
+    margin: 2rem 0rem;
+}
+
 </style>
