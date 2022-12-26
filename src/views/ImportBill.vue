@@ -4,9 +4,7 @@
             <div class="col-lg-4 col-md-6 col-sm-12">
                 <label for="account">Selecione uma conta para importar</label>
                 <select id="account" v-model="account" class="form-select" required>
-                    <option id="1" value="1">1</option>
-                    <option id="2" value="2">2</option>
-                    <option id="3" value="3">3</option>
+                    <option v-for="account in bankAccount" :key="account.id" :value="account.tag" >{{account.name}} ({{ account.branch }} {{account.account}})</option>
                 </select>
             </div>
             <div class="col-lg-4 col-md-6 col-sm-12">
@@ -18,43 +16,59 @@
             </div>
         </div>
         <p>{{ account }}</p>
+        <div>
+            <p v-for="file in files" :key="file">{{ file.name }}</p>
+        </div>
     </form>
 </template>
 
 <script>
-export default {
+
+import digitalBillApi from "@/services/api";
+import { defineComponent, reactive, ref, toRefs, provide, computed, onMounted } from "vue"
+
+export default defineComponent({
     name: 'ImportBillView',
     methods: {
+        async getBankAccount() {
+            this.bankAccount = new Array();
+            return await digitalBillApi.get("/api/bank_account/").then(response => this.bankAccount = this.bankAccount.concat(response.data))
+        },
         async uploadBill() {
             let url = "http://127.0.0.1:8001/bill/import/";
 
-            const response = await fetch(url, {
-                method: 'POST', // *GET, POST, PUT, DELETE, etc.
-                mode: 'no-cors', // no-cors, *cors, same-origin
-                cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-                credentials: 'same-origin', // include, *same-origin, omit
-                headers: {
-                    'Content-Type': 'multipart/form-data', // 'application/json', 'application/x-www-form-urlencoded'
-                },
-                body: {
-                    bill: this.files,
-                    account: this.account
-                }
-            })
-            console.log(response)
+            // const response = await fetch(url, {
+            //     method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            //     mode: 'no-cors', // no-cors, *cors, same-origin
+            //     cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            //     credentials: 'same-origin', // include, *same-origin, omit
+            //     headers: {
+            //         'Content-Type': 'multipart/form-data', // 'application/json', 'application/x-www-form-urlencoded'
+            //     },
+            //     body: {
+            //         bill: this.files,
+            //         account: this.account
+            //     }
+            // });
+            // console.log(response)
         },
         addFiles() {
             this.files = this.$refs.file.files;
         }
-
     },
-    data: () => {
-        return {
-            account: String(),
-            files: null,
-        }
+    setup() {
+        const data = reactive({
+            account: ref(""),
+            files: ref(null),
+            bankAccount: Array,
+        });
+        return { ...toRefs(data) }
+    },
+    async created() {
+        await this.getBankAccount();
+        console.log(this.bankAccount.forEach((a)=> {console.log(a)}));
     }
-}
+})
 </script>
 
 <style scoped>
