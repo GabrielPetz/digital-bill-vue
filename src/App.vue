@@ -26,6 +26,11 @@ export default {
 </script>
 
 <style>
+
+.h-full {
+  height: -webkit-fill-available;
+}
+
 .btn-secondary,
 .btn-secondary:hover,
 .btn-secondary:focus {
@@ -39,17 +44,14 @@ export default {
  * Base structure
  */
 
-html {
-  height: 100%!important;
-}
-
 body {
   text-shadow: 0 .05rem .1rem rgba(0, 0, 0, .5);
   box-shadow: inset 0 0 5rem rgba(0, 0, 0, .5);
 }
 
 .cover-container {
-  max-width: 80em;
+  max-width: 100em;
+
 }
 
 
