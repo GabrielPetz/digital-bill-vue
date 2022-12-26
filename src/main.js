@@ -1,3 +1,8 @@
+import "bootstrap/dist/css/bootstrap.css"
+import "bootstrap/dist/css/bootstrap-grid.css"
+import "bootstrap-icons/font/bootstrap-icons.css"
+
+
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
@@ -10,3 +15,5 @@ createApp(App)
 global.jQuery = require('jquery');
 var $ = global.jQuery;
 window.$ = $;
+
+import "bootstrap/dist/js/bootstrap.js"
