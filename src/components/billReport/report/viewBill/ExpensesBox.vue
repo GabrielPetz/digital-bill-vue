@@ -21,7 +21,7 @@
 <script>
 
 import { mountPieChart } from "@/utils/HighChartsBuilder"
-import { defineComponent, reactive, ref, toRefs, provide, onMounted } from "vue"
+import { defineComponent, reactive, ref, toRefs } from "vue"
 import { dateTimeFormat, currencyFormat } from "@/services/formatters";
 
 export default defineComponent({

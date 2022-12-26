@@ -10,12 +10,12 @@
 
 <script>
 import digitalBillApi from "@/services/api";
-import ViewBillResult from "@/components/report/ViewBillResult"
-import ViewBillResultSwitch from "@/components/report/ViewBillResult"
-import ViewBillForm from "@/components/forms/ViewBillForm"
+import ViewBillResult from "@/components/billReport/report/ViewBillResult"
+import ViewBillResultSwitch from "@/components/billReport/report/ViewBillResult"
+import ViewBillForm from "@/components/billReport/forms/ViewBillForm"
 import NoDataFound from "@/components/empty/NoDataFound.vue"
 import EmptyResult from "@/components/empty/EmptyResult.vue"
-import { defineComponent, reactive, ref, toRefs, provide, computed } from "vue"
+import { defineComponent, reactive, ref, toRefs, computed } from "vue"
 
 export default defineComponent({
     name: 'ViewBillView',

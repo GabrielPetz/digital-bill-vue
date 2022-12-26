@@ -20,8 +20,8 @@
 </template>
 
 <script>
-import Report from "@/components/report/viewBill/Report";
-import ExpensesBox from "@/components/report/viewBill/ExpensesBox";
+import Report from "@/components/billReport/report/viewBill/Report";
+import ExpensesBox from "@/components/billReport/report/viewBill/ExpensesBox";
 import { defineComponent, reactive, ref, toRefs, computed } from "vue"
 
 export default defineComponent({

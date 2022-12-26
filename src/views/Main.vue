@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import Box from '../components/boxes/Box'
+import Box from '@/components/boxes/Box'
 export default {
     name: 'MainComponent',
     components: {
