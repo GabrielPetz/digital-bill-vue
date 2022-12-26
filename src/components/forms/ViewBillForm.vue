@@ -1,17 +1,22 @@
 <template>
     <div id="view-bill-form" class="row">
-        <div class="col-lg-6 col-sm-12">
+        <div class="col-lg-5 col-sm-12">
             <label for="bill">Selecione uma fatura</label>
             <select id="bill" class="form-select" v-model="selectedBill">
                 <option v-for="bill in bills" :key="bill.tag" :value="bill.tag">{{ bill.name }}</option>
             </select>
         </div>
-        <div class="col-lg-6 col-sm-12">
+        <div class="col-lg-5 col-sm-12">
             <label for="ignore-category">Categorias para ignorar</label>
-            <select id="ignore-category" class="form-select" v-model="selectedCategories">
+            <select id="ignore-category" class="form-select" v-model="selectedCategories" multiple>
                 <option v-for="category in categories" :key="category.id" :value="category.id">{{ category.name }}
                 </option>
             </select>
+        </div>
+        <div class="col-lg-2 col-sm-12 form-check">
+            <input id="ignorable-categories" class="form-check-input" type="checkbox" v-model="ignorableCaterogies"
+                :value="ignorableCaterogies">
+            <label for="ignorable-categories" class="form-check-label">Ignorar categorias padrões?</label>
         </div>
         <div class="d-grid gap-2 col-lg-12 col-md-12 col-sm-12 mx-auto mt-4">
             <button type="button" @click="query" class="btn btn-outline-primary">Consultar</button>
@@ -32,6 +37,7 @@ export default {
             categories: null, // this.getCategories(),
             selectedBill: null,
             selectedCategories: null,
+            ignorableCaterogies: true,
         }
     },
     methods: {
@@ -40,6 +46,7 @@ export default {
             this.$emit("getQueryEvent", {
                 selectedBill: this.selectedBill,
                 selectedCategories: this.selectedCategories,
+                ignorableCaterogies: this.ignorableCaterogies
             })
         },
         async getBills() {
@@ -58,6 +65,9 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.form-check {
+    text-align: start;
+    padding: 1.8rem;
+}
 </style>
