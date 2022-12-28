@@ -17,8 +17,8 @@ export default {
     },
     methods: {
         onClick(e) {
-            let viewHandler = window.$(e.target)
-            this.$router.push({name: viewHandler.data("view")})
+            let viewHandler = e.target.getAttribute("data-view")
+            this.$router.push({name: viewHandler})
         }
     }
 }
