@@ -26,7 +26,6 @@ export default {
 </script>
 
 <style>
-
 .h-full {
   height: -webkit-fill-available;
 }

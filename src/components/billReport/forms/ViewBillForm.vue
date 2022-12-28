@@ -27,6 +27,7 @@
 
 <script>
 import digitalBillApi from "@/services/api";
+import Extractor from '@/utils/extractors.js';
 
 export default {
     name: 'ViewBillForm',
@@ -42,7 +43,6 @@ export default {
     },
     methods: {
         query() {
-            console.log("click query")
             this.$emit("getQueryEvent", {
                 selectedBill: this.selectedBill,
                 selectedCategories: this.selectedCategories,
@@ -51,11 +51,13 @@ export default {
         },
         async getBills() {
             const response = await digitalBillApi.get('/api/bill/')
-                .then(response => this.bills = response.data)
+                .then(response => this.bills = response.data);
+            // this.bills = Extractor.extractDataToSelectFormat(this.bills, 'tag', 'name')
         },
         async getCategories() {
             const response = await digitalBillApi.get('/api/category/')
                 .then(response => this.categories = response.data)
+            // this.categories = Extractor.extractDataToSelectFormat(this.categories, 'tag', 'name')
         }
     },
     created() {
