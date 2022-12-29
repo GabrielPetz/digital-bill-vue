@@ -3,7 +3,7 @@ import HighChartsTheme from "@/utils/highchartsDefault";
 export function mountPieChart(identifier, data) {
     const HighCharts = require("highcharts");
     HighCharts.setOptions(HighChartsTheme);
-    HighCharts.chart(`pie-chart-${identifier}`, {
+    HighCharts.chart(identifier, {
         chart: {
             type: 'pie',
             height: 240,

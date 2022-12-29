@@ -36,7 +36,7 @@ export default defineComponent({
             let salary = this.salary;
             let salaryValue = salary.value - minExpense.value;
 
-            mountPieChart(`bill-${this.mode}`, [{
+            mountPieChart(`pie-chart-bill-${this.mode}`, [{
                 name: 'Gastos',
                 colorByPoint: true,
                 data: [{
@@ -50,7 +50,7 @@ export default defineComponent({
                 }]
             }]);
 
-            mountPieChart(`salary-${this.mode}`, [{
+            mountPieChart(`pie-chart-salary-${this.mode}`, [{
                 name: 'Gastos',
                 colorByPoint: true,
                 data: [{
