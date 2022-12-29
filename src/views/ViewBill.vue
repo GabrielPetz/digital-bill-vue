@@ -2,7 +2,6 @@
     <div>
         <ViewBillForm @getQueryEvent="getQueryEvent" />
         <div id="view-bill-result" class="row dynamic-component">
-            <!-- <component :is="renderResult" :response="apiResponse"></component> -->
             <component :is="renderResult"></component>
         </div>
     </div>
@@ -39,7 +38,7 @@ export default defineComponent({
             this.ignorableCaterogies = kwargs.ignorableCaterogies;
  
             this.renderResult = null;
-            if (kwargs.selectedBill) {
+            if (kwargs.selectedBill && typeof kwargs.selectedBill == "string") {
                 let data = await this.getData();
                 this.apiResponse = {
                     "apiData": data
