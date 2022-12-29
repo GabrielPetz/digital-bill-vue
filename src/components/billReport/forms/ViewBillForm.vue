@@ -27,7 +27,7 @@
 
 <script>
 import digitalBillApi from "@/services/api";
-import Extractor from '@/utils/extractors.js';
+import Extractor from '@/services/extractors.js';
 
 export default {
     name: 'ViewBillForm',
@@ -36,8 +36,8 @@ export default {
         return {
             bills: null, // this.getBills(),
             categories: null, // this.getCategories(),
-            selectedBill: null,
-            selectedCategories: null,
+            selectedBill: new Array(),
+            selectedCategories: new Array(),
             ignorableCaterogies: true,
         }
     },
