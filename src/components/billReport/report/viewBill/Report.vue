@@ -8,7 +8,7 @@
             <th>Valor</th>
         </thead>
         <tbody>
-            <tr v-for="expense in expenses.value.expenseList" :key="expense.id">
+            <tr v-for="expense in expenses" :key="expense.id">
                 <td>{{ formatDate(expense.date) }}</td>
                 <td>{{ expense.name }}</td>
                 <td>{{ expense.category.name }}</td>
@@ -22,30 +22,40 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td>{{ formatValue(expenses.value.total) }}</td>
+                <td>{{ formatValue(statistics.total) }}</td>
             </tr>
         </tfoot>
     </table>
 </template>
 
 <script>
-import { defineComponent } from "vue"
-import  { dateTimeFormat, currencyFormat } from "@/services/formatters";
+import { defineComponent, reactive, ref, toRefs } from "vue";
+import Formatter from "@/services/formatters"
 
 export default defineComponent({
     name: "ReportComponent",
-    inject: ['expenses'],
+    inject: ['billData'],
     methods: {
         formatDate(date) {
-            return dateTimeFormat(Date.parse(date));
+            return Formatter.dateTimeFormat(Date.parse(date));
         },
         formatValue(value) {
-            return currencyFormat(value);
+            return Formatter.currencyFormat(value);
         }
     },
-    created() {
-        console.log(this.expenses.value)
-    }
+    setup() {
+        const data = reactive({
+            expenses: ref(Array),
+            statistics: ref(Array),
+        });
+        return { ...toRefs(data) }
+    },
+    mounted() {
+        let expensesData = this.billData.value.expenses;
+        this.expenses = expensesData.all_expenses;
+        this.statistics = expensesData.statistics;
+    },
+
 })
 </script>
 
@@ -57,6 +67,5 @@ export default defineComponent({
 
 .footer {
     font-weight: bold;
-
 }
 </style>

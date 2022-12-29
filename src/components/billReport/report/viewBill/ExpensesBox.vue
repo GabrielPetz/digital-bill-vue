@@ -1,5 +1,5 @@
 <template>
-    <div class="box-expenses">
+    <div class="round-border default-margin box-expenses">
         <div class="box-expenses-header">
             <span>{{ headerValue }}</span>
         </div>
@@ -10,10 +10,9 @@
             <span>{{ formatValue(footerValue) }}</span>
         </div>
         <div class="row">
-            <div class="col-6" v-bind:id="`pie-chart-bill-${mode}`"></div>
-            <div class="col-6" v-bind:id="`pie-chart-salary-${mode}`"></div>
+            <div class="col-6" :id="`pie-chart-bill-${mode}`"></div>
+            <div class="col-6" :id="`pie-chart-salary-${mode}`"></div>
         </div>
-        
         <div v-bind:id="`history-chart-${mode}`"></div>
     </div>
 </template>
@@ -22,20 +21,20 @@
 
 import { mountPieChart } from "@/utils/HighChartsBuilder"
 import { defineComponent, reactive, ref, toRefs } from "vue"
-import { dateTimeFormat, currencyFormat } from "@/services/formatters";
+import Formatter from "@/services/formatters"
 
 export default defineComponent({
     name: "ExpensesBoxComponent",
-    inject: ['statistics'],
+    inject: ['billData'],
     props: {
         mode: String,
     },
     methods: {
         billMinMount() {
-            let minExpense = this.statistics.value.min_expense;
-            let total = this.statistics.value.total - minExpense.value;
-            let salary = this.statistics.value.salary;
-            let salaryValue = this.statistics.value.salary.value - minExpense.value;
+            let minExpense = this.statistics.min_expense;
+            let total = this.statistics.total - minExpense.value;
+            let salary = this.salary;
+            let salaryValue = salary.value - minExpense.value;
 
             mountPieChart(`bill-${this.mode}`, [{
                 name: 'Gastos',
@@ -69,12 +68,12 @@ export default defineComponent({
             this.footerValue = minExpense.value;
         },
         billMaxMount() {
-            let maxExpense = this.statistics.value.max_expense;
-            let total = this.statistics.value.total - maxExpense.value;
-            let salary = this.statistics.value.salary;
-            let salaryValue = this.statistics.value.salary.value - maxExpense.value;
+            let maxExpense = this.statistics.max_expense;
+            let total = this.statistics.total - maxExpense.value;
+            let salary = this.salary;
+            let salaryValue = salary.value - maxExpense.value;
 
-            mountPieChart(`bill-${this.mode}`, [{
+            mountPieChart(`pie-chart-bill-${this.mode}`, [{
                 name: 'Gastos',
                 colorByPoint: true,
                 data: [{
@@ -87,7 +86,7 @@ export default defineComponent({
                 }]
             }]);
 
-            mountPieChart(`salary-${this.mode}`, [{
+            mountPieChart(`pie-chart-salary-${this.mode}`, [{
                 name: 'Gastos',
                 colorByPoint: true,
                 data: [{
@@ -106,20 +105,34 @@ export default defineComponent({
         },
         totalMount() {
             this.headerValue = "Total";
-            this.mainValue = this.statistics.value.salary.name;
-            let salaryValue = this.statistics.value.salary.value;
-            let totalExpenses = this.statistics.value.total;
+            this.mainValue = this.salary.name;
+            let salaryValue = this.salary.value;
+            let totalExpenses = this.statistics.total;
             this.footerValue = totalExpenses;
         },
         formatDate(date) {
-            return dateTimeFormat(Date.parse(date));
+            return Formatter.dateTimeFormat(Date.parse(date));
         },
         formatValue(value) {
-            return currencyFormat(value);
+            return Formatter.currencyFormat(value);
         }
     },
+    setup() {
+        const data = reactive({
+            statistics: ref(Object),
+            salary: ref(Object),
+
+            headerValue: ref(""),
+            mainValue: ref(""),
+            footerValue: ref(""),
+        });
+        return { ...toRefs(data) }
+    },
     mounted() {
-        // console.log(this.statistics.value);
+        let data = this.billData.value;
+        this.statistics = data.expenses.statistics;
+        this.salary = data.salary;
+        
         let options = {
             min: this.billMinMount,
             max: this.billMaxMount,
@@ -129,26 +142,17 @@ export default defineComponent({
         options[this.mode]()
 
     },
-    setup() {
-        const data = reactive({
-            headerValue: ref(""),
-            mainValue: ref(""),
-            footerValue: ref(""),
-        });
-        return { ...toRefs(data) }
-    }
 })
 </script>
 
 <style scoped>
 .box-expenses {
-    border: 2px solid rgb(84, 87, 92);
-    border-radius: 5px;
-    /* max-width: 500px; */
     max-height: 1000px;
-    margin: .5rem;
 }
 
+.highcharts-container {
+    border-radius: 0.75rem;
+}
 .box-expenses-header {
     font-size: 35px;
     text-align: center;

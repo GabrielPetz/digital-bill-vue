@@ -1,8 +1,14 @@
 <template>
-    <div class="container box-list ">
-        <Box title="Importar fatura" icon="bi bi-box-arrow-in-up" url="ImportBill" />
-        <Box title="Consultar faturas" icon="bi bi-search" url="ViewBill" />
-        <Box title="Analise de faturas" icon="bi bi-bar-chart-line" url="Analytics" />
+    <div class="container-fluid row box-list">
+        <div class="col-lg-4 col-md-12 box-item">
+            <Box title="Importar fatura" icon="bi bi-box-arrow-in-up" url="ImportBill" />
+        </div>
+        <div class="col-lg-4 col-md-12 box-item">
+            <Box title="Consultar faturas" icon="bi bi-search" url="ViewBill" />
+        </div>
+        <div class="col-lg-4 col-md-12 box-item">
+            <Box title="Analise de faturas" icon="bi bi-bar-chart-line" url="Analytics" />
+        </div>
     </div>
 </template>
 
@@ -17,9 +23,7 @@ export default {
 </script>
 
 <style scoped>
-.box-list {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
+.box-item {
+    margin: .5rem 0rem !important;
 }
 </style>

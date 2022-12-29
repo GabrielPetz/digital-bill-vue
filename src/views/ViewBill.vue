@@ -37,7 +37,7 @@ export default defineComponent({
             this.selectedBill = kwargs.selectedBill;
             this.selectedCategories = kwargs.selectedCategories;
             this.ignorableCaterogies = kwargs.ignorableCaterogies;
-            console.log(kwargs)
+ 
             this.renderResult = null;
             if (kwargs.selectedBill) {
                 let data = await this.getData();
@@ -51,19 +51,13 @@ export default defineComponent({
             }
         },
         async getData() {
-            // let baseUrl = `/api/bill_statistics/?tag=${this.selectedBill}&category_ignore=${this.ignorableCaterogies}`
-            // if (this.selectedCategories) {
-            //     baseUrl = baseUrl + `&category_not_in=${this.selectedCategories}`;
-            // }
             return await digitalBillApi.get("/api/bill_statistics/", {
                 params: {
                     tag: this.selectedBill,
                     category_ignore: this.ignorableCaterogies,
                     category_not_in: this.selectedCategories
                 }
-            })
-                .then(response => response.data)
-                .then(data => data)
+            }).then(response => response.data).then(data => data)
         }
     },
     provide() {
