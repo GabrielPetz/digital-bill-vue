@@ -3,7 +3,7 @@
         <div class="bar-handler" v-for="categoryTotal in categories" :key="categoryTotal.category.tag">
             <div class="category-info">
                 <div class="text-left">
-                    <span class="category-position">{{ categoryTotal.index }}&#186;</span>
+                    <span class="category-position">{{ categoryTotal.index }}&#186; </span>
                     <span>{{ categoryTotal.category.name }}</span>
                 </div>
                 <div class="text-right">
@@ -46,11 +46,7 @@ export default defineComponent({
     },
     mounted() {
         let expenses = this.billData.value.expenses;
-        this.categories = expenses.expenses_by_category
-        this.categories.forEach((e, i) => {
-            console.log(this)
-            console.log(e, i)
-        });
+        this.categories = expenses.expenses_by_category;
         this.totalValueOfExpenses = expenses.statistics.total;
     }
 })
@@ -63,16 +59,17 @@ export default defineComponent({
 }
 
 .text-right {
-    text-align: right; 
+    text-align: left; 
 }
 
 .category-bars .bar-handler {
-    padding: 1rem 1rem;
+    padding: 0.5rem 1rem;
 }
 
 .category-info {
-    display: flex;
-    justify-content: space-between;
+    /* display: flex;
+    justify-content: space-between; */
+    margin: 0.5rem 0rem;
 }
 
 .category-position {

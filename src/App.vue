@@ -39,6 +39,7 @@ export default {
   --border: .05em;
   border: var(--border) solid rgb(198, 231, 231);
   border-radius: calc(var(--radius) + var(--border));
+  overflow: hidden;
 }
 
 .default-margin {

@@ -12,12 +12,6 @@ export default defineComponent({
     name: "HistoryChartComponent",
     inject: ['billData'],
     components: {},
-    // setup() {
-    //     const data = reactive({
-    //         billData: ref([]),
-    //     });
-    //     return { ...toRefs(data) }
-    // },
     mounted() {
         let extractor = new Extractor(this.billData.value);
         let data = extractor.extractDataToHighchartsFormat("daily");

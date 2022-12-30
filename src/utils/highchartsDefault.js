@@ -1,5 +1,4 @@
-
-const HighChartsTheme = {
+const HighChartsDarkTheme = {
     colors: ['#058DC7', '#50B432', '#ED561B', '#DDDF00', '#24CBE5', '#64E572',
         '#FF9655', '#FFF263', '#6AF9C4'],
     chart: {
@@ -10,7 +9,7 @@ const HighChartsTheme = {
         plotShadow: false,
         style: {
             color: "#fff"
-        }
+        },
     },
     title: {
         style: {
@@ -19,9 +18,13 @@ const HighChartsTheme = {
         }
     },
     xAxis: {
-        gridLineWidth: 1,
-        lineColor: '#000',
-        tickColor: '#000',
+        lineWidth: 0,
+        minorGridLineWidth: 0,
+        lineColor: 'transparent',
+        gridLineWidth: .2,
+        minorTickLength: 0,
+        tickLength: 0,
+        tickColor: '#fff',
         labels: {
             style: {
                 color: '#fff',
@@ -30,7 +33,7 @@ const HighChartsTheme = {
         },
         title: {
             style: {
-                color: '#333',
+                color: '#fff',
                 fontWeight: 'bold',
                 fontSize: '12px',
                 fontFamily: 'Trebuchet MS, Verdana, sans-serif'
@@ -39,11 +42,15 @@ const HighChartsTheme = {
         }
     },
     yAxis: {
+        lineWidth: 0,
+        minorGridLineWidth: 0,
+        lineColor: 'transparent',
+        gridLineWidth: .2,
+        minorTickLength: 0,
+        tickLength: 0,
         minorTickInterval: 'auto',
-        lineColor: '#000',
-        lineWidth: 1,
         tickWidth: 1,
-        tickColor: '#000',
+        tickColor: '#fff',
         labels: {
             style: {
                 color: '#fff',
@@ -52,7 +59,7 @@ const HighChartsTheme = {
         },
         title: {
             style: {
-                color: '#333',
+                color: '#fff',
                 fontWeight: 'bold',
                 fontSize: '12px',
                 fontFamily: 'Trebuchet MS, Verdana, sans-serif'
@@ -61,7 +68,6 @@ const HighChartsTheme = {
     },
     legend: {
         itemStyle: {
-
             color: 'white'
         },
         itemHoverStyle: {
@@ -70,4 +76,25 @@ const HighChartsTheme = {
     }
 };
 
-export default HighChartsTheme;
+const CommonConfig = {
+    exporting: {
+        enabled: false,
+    },
+    title: {
+        text: null
+    },
+    credits: {
+        enabled: false
+    }
+}
+
+
+class HighChartsConfigs {
+    static getDarkTheme() {
+        return HighChartsDarkTheme;
+    }
+    static getDefaultCommonConfig() {
+        return CommonConfig;
+    }
+}
+export default HighChartsConfigs;

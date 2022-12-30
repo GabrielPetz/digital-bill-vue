@@ -1,7 +1,12 @@
 const DateTimeFormatter = new Intl.DateTimeFormat(window.navigator.language, {
     dateStyle: 'short',
     timeStyle: 'short',
-    timeZone: 'America/Sao_Paulo'
+    timeZone: 'UTC'
+});
+
+const DateFormatter = new Intl.DateTimeFormat(window.navigator.language, {
+    dateStyle: 'short',
+    timeZone: 'UTC'
 });
 
 const CurrencyFormatter = new Intl.NumberFormat(window.navigator.language, {
@@ -30,6 +35,9 @@ const PercentageFormatter = new Intl.NumberFormat(window.navigator.language, {
 class Formatters {
     static dateTimeFormat(date) {
         return DateTimeFormatter.format(date);
+    }
+    static dateFormat(date) {
+        return DateFormatter.format(date);
     }
     static currencyFormat(value) {        
         return CurrencyFormatter.format(value);

@@ -54,7 +54,7 @@ export default defineComponent({
                 params: {
                     tag: this.selectedBill,
                     category_ignore: this.ignorableCaterogies,
-                    category_not_in: this.selectedCategories
+                    category_not_in: JSON.stringify(this.selectedCategories)
                 }
             }).then(response => response.data).then(data => data)
         }
