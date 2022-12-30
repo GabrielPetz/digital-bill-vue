@@ -7,18 +7,16 @@
             <span>{{ mainValue }}</span>
         </div>
         <div class="box-expenses-footer">
-            <span>{{ formatValue(footerValue) }}</span>
+            <span>{{ footerValue }}</span>
         </div>
         <div class="row">
-            <div class="col-6" :id="`pie-chart-bill-${mode}`"></div>
-            <div class="col-6" :id="`pie-chart-salary-${mode}`"></div>
+            <div v-if="mode !== 'total'" class="col" :id="`pie-chart-bill-${mode}`"></div>
+            <div class="col" :id="`pie-chart-salary-${mode}`"></div>
         </div>
-        <div v-bind:id="`history-chart-${mode}`"></div>
     </div>
 </template>
 
 <script>
-
 import { mountPieChart } from "@/utils/HighChartsBuilder"
 import { defineComponent, reactive, ref, toRefs } from "vue"
 import Formatter from "@/services/formatters"
@@ -65,7 +63,7 @@ export default defineComponent({
             }]);
             this.headerValue = "Menor gasto"
             this.mainValue = `${minExpense.name} (${minExpense.category.name})`;
-            this.footerValue = minExpense.value;
+            this.footerValue = this.formatValue(minExpense.value);
         },
         billMaxMount() {
             let maxExpense = this.statistics.max_expense;
@@ -101,14 +99,30 @@ export default defineComponent({
             }]);
             this.headerValue = "Maior gasto"
             this.mainValue = `${maxExpense.name} (${maxExpense.category.name})`;
-            this.footerValue = maxExpense.value;
+            this.footerValue = this.formatValue(maxExpense.value);
         },
         totalMount() {
+            
+            let salary = this.salary;
+            let totalExpenses = this.statistics.total;
+            let salaryValue = salary.value - totalExpenses
+            mountPieChart(`pie-chart-salary-${this.mode}`, [{
+                name: 'Gastos',
+                colorByPoint: true,
+                data: [{
+                    name: this.salary.name,
+                    y: salaryValue,
+                    selected: true,
+                    sliced: true
+                }, {
+                    name: "Valor total",
+                    y: totalExpenses,
+                }]
+            }]);
+
             this.headerValue = "Total";
             this.mainValue = this.salary.name;
-            let salaryValue = this.salary.value;
-            let totalExpenses = this.statistics.total;
-            this.footerValue = totalExpenses;
+            this.footerValue = `${this.formatValue(totalExpenses)} / ${this.formatValue(salary.value)}`;
         },
         formatDate(date) {
             return Formatter.dateTimeFormat(Date.parse(date));
@@ -151,10 +165,11 @@ export default defineComponent({
 }
 
 .highcharts-container {
-    border-radius: 0.75rem;
+    border-radius: 0.75rem !important;
 }
+
 .box-expenses-header {
-    font-size: 35px;
+    font-size: 1.2rem;
     text-align: center;
 }
 
@@ -164,7 +179,7 @@ export default defineComponent({
 }
 
 .box-expenses-footer {
-    font-size: 25px;
+    font-size: 1rem;
     text-align: center;
 }
 </style>
