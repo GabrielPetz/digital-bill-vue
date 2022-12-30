@@ -1,20 +1,22 @@
 <template>
     <div class="result-box">
         <div class="row">
-            <div class="col-lg-9">
-                <p class="bill-statistics">Estatísticas da fatura: {{ billData.name }}</p>
+            <div class="col-lg-9 col-md-12">
+                <p class="bill-statistics">Estatísticas da fatura</p>
                 <div class="row">
-                    <div class="col-12">
+                    <div class="col-lg-4 col-md-6 col-sm-12">
                         <ExpensesBox mode="total" />
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-12">
+                        <ExpensesBox mode="min" />
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-12">
+                        <ExpensesBox mode="max" />
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-6 col-md-12">
-                        <ExpensesBox mode="min" />
-                    </div>
-                    <div class="col-lg-6 col-md-12">
-                        <ExpensesBox mode="max" />
-                    </div>
+                    <p class="bill-statistics">Histórico de gastos</p>
+                    <HistoryChart />
                 </div>
                 <div class="row">
                     <p class="bill-statistics">Lista de gastos</p>
@@ -23,7 +25,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-3">
+            <div class="col-lg-3 col-md-12">
                 <p class="bill-statistics">Gastos por categoria</p>
                 <CategoryBar />
             </div>
@@ -35,13 +37,14 @@
 import Report from "@/components/billReport/report/viewBill/Report";
 import ExpensesBox from "@/components/billReport/report/viewBill/ExpensesBox";
 import CategoryBar from "@/components/billReport/report/viewBill/CategoryBar";
+import HistoryChart from "@/components/billReport/report/viewBill/HistoryChart";
 import { defineComponent, reactive, ref, toRefs, computed } from "vue"
 
 export default defineComponent({
     name: "ViewBillResultComponent",
     inject: ['apiResponse'],
     components: {
-        Report, ExpensesBox, CategoryBar
+        Report, ExpensesBox, CategoryBar, HistoryChart
     },
     setup() {
         const data = reactive({
@@ -66,7 +69,8 @@ export default defineComponent({
 }
 
 .bill-statistics {
-    font-size: 2em;
+    font-size: 1.5em;
     font-weight: bold;
+    margin: 1rem 0rem;
 }
 </style>
