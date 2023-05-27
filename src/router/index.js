@@ -1,8 +1,10 @@
 import {createRouter, createWebHistory} from 'vue-router'
-import Main from '../views/Main.vue'
-import ImportBill from '../views/ImportBill.vue'
-import ViewBill from '../views/ViewBill.vue'
-import AnalytictsBill from '../views/AnalytictsBill.vue'
+import Main from '@/views/Main.vue'
+import ImportBill from '@/views/ImportBill.vue'
+import ViewBill from '@/views/ViewBill.vue'
+import AnalytictsBill from '@/views/AnalytictsBill.vue'
+import ManagementView from '@/views/management/ManagementView.vue'
+import SalaryHandler from '@/views/management/salary/SalaryHandler.vue'
 
 const routes = [
     {
@@ -24,6 +26,16 @@ const routes = [
         path: '/analytics',
         name: 'Analytics',
         component: AnalytictsBill,
+    },
+    {
+        path: '/management',
+        name: 'Management',
+        component: ManagementView,
+    },
+    {
+        path: '/management/salary',
+        name: 'Salary',
+        component: SalaryHandler,
     }
 ]
 

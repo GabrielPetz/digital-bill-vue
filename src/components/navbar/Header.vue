@@ -5,7 +5,7 @@
             <NavItemComponent title="Home" url="Main"/>
             <NavItemComponent title="Importar fatura" url="ImportBill"/>
             <NavItemComponent title="Consultar faturas" url="ViewBill"/>
-            <NavItemComponent title="Analise de faturas" url="Analytics"/>
+            <NavItemComponent title="Analise de gastos" url="Analytics"/>
         </nav>
     </div>
 </template>

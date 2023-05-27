@@ -9,6 +9,9 @@
         <div class="col-lg-4 col-md-12 box-item">
             <Box title="Analise de faturas" icon="bi bi-bar-chart-line" url="Analytics" />
         </div>
+        <div class="col-lg-4 col-md-12 box-item">
+            <Box title="Gerenciamento de dados" icon="bi bi-folder" url="Management" />
+        </div>
     </div>
 </template>
 

@@ -25,6 +25,9 @@ export default {
 </script>
 
 <style scoped>
+.round-border {
+    padding: 0rem;
+}
 .box {
     display: flex;
     justify-content: center;

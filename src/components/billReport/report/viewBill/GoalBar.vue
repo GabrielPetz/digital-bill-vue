@@ -1,58 +1,62 @@
 <template>
-    <div id="category-list" class="round-border default-margin category-bars">
-        <h2>Total: {{ formatCurrency(totalValueOfExpenses) }}</h2>
-        <div class="bar-handler" v-for="categoryTotal in categories" :key="categoryTotal.category.tag">
+    <div id="goal-list" class="round-border default-margin category-bars">
+        <div class="bar-handler" v-for="goal in goals" :key="goal.category.tag">
             <div class="category-info">
                 <div>
-                    <span class="category-position">{{ categoryTotal.index }}&#186; </span>
-                    <span>{{ categoryTotal.category.name }}</span>
+                    <span>{{ goal.category.name }}</span>
                 </div>
                 <div>
-                    <span class="badge bg-secondary">{{ formatCurrency(categoryTotal.total) }}</span>
+                    <span class="badge bg-secondary">{{ formatCurrency(goal.total) }} / {{ formatCurrency(goal.goal) }} </span>
                 </div>
             </div>
 
             <div class="progress" role="progressbar">
-                <div class="progress-bar" :style="{ 'width': getSliderValue(categoryTotal.total) + '%' }"></div>
+                <div class="progress-bar" 
+                :class="{'bg-danger': isAlertLevel(goal.total, goal.goal)}"
+                :style="{ 'width': getGoalSliderValue(goal.total, goal.goal) + '%' }"></div>
             </div>
         </div>
     </div>
+
 </template>
 
 <script>
-import { defineComponent, reactive, ref, toRefs } from "vue";
+import { defineComponent, onMounted, reactive, ref, toRefs } from "vue";
 import Formatter from "@/services/formatters"
 
 export default defineComponent({
-    name: "CategoryBarComponent",
+    name: "GoalBarComponent",
     inject: ['billData'],
     methods: {
-        getSliderValue(value) {
-            let percentage = value / this.totalValueOfExpenses;
+        getGoalSliderValue(value, goal) {
+            let percentage = value / goal;
             percentage = percentage * 100;
             return percentage;
         },
         formatCurrency(value) {
             return Formatter.currencyFormat(value);
         },
+        isAlertLevel(value, goal){
+            return value > goal ? true : false;
+        },
     },
     setup() {
         const data = reactive({
-            categories: ref(Array),
-            totalValueOfExpenses: ref(null)
+            goals: ref(Array),
         });
         return { ...toRefs(data) }
     },
     mounted() {
         let expenses = this.billData.value.expenses;
-        this.categories = expenses.expenses_by_category;
-        this.totalValueOfExpenses = expenses.statistics.total;
+        let categoryGoals = expenses.expenses_by_category;
+        this.goals = categoryGoals.filter(x => x.there_is_goal)
+        
     }
 })
 </script>
 
 <style scoped>
-#category-list {
+#goal-list {
     padding: .5rem 0rem;
 }
 

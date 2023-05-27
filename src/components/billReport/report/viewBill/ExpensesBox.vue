@@ -1,5 +1,5 @@
 <template>
-    <div class="round-border default-margin box-expenses">
+    <div class="round-border box-expenses">
         <div class="box-expenses-header">
             <span>{{ headerValue }}</span>
         </div>

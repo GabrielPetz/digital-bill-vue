@@ -15,17 +15,24 @@
                     </div>
                 </div>
                 <div class="row">
-                    <p class="bill-statistics">Histórico de gastos</p>
-                    <HistoryChart />
+                    <div class="col-12">
+                        <p class="bill-statistics">Histórico de gastos</p>
+                        <HistoryChart />
+                    </div>
+
                 </div>
                 <div class="row">
-                    <p class="bill-statistics">Lista de gastos</p>
-                    <div class="report-result">
-                        <Report />
+                    <div class="col-12">
+                        <p class="bill-statistics">Lista de gastos</p>
+                        <div class="report-result">
+                            <Report />
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="col-lg-3 col-md-12">
+                <p class="bill-statistics">Metas de gastos</p>
+                <GoalBar />
                 <p class="bill-statistics">Gastos por categoria</p>
                 <CategoryBar />
             </div>
@@ -36,6 +43,7 @@
 <script>
 import Report from "@/components/billReport/report/viewBill/Report";
 import ExpensesBox from "@/components/billReport/report/viewBill/ExpensesBox";
+import GoalBar from "@/components/billReport/report/viewBill/GoalBar";
 import CategoryBar from "@/components/billReport/report/viewBill/CategoryBar";
 import HistoryChart from "@/components/billReport/report/viewBill/HistoryChart";
 import { defineComponent, reactive, ref, toRefs, computed } from "vue"
@@ -44,7 +52,7 @@ export default defineComponent({
     name: "ViewBillResultComponent",
     inject: ['apiResponse'],
     components: {
-        Report, ExpensesBox, CategoryBar, HistoryChart
+        Report, ExpensesBox, CategoryBar, HistoryChart, GoalBar
     },
     setup() {
         const data = reactive({

@@ -4,7 +4,9 @@
             <div class="col-lg-4 col-md-6 col-sm-12">
                 <label for="account">Selecione uma conta para importar</label>
                 <select id="account" v-model="account" class="form-select" required>
-                    <option v-for="account in bankAccount" :key="account.id" :value="account.tag" >{{account.name}} ({{ account.branch }} {{account.account}})</option>
+                    <option v-for="account in bankAccount" :key="account.id" :value="account.tag">{{ account.name }} ({{
+        account.branch
+}} {{ account.account }})</option>
                 </select>
             </div>
             <div class="col-lg-4 col-md-6 col-sm-12">
@@ -35,22 +37,22 @@ export default defineComponent({
             return await digitalBillApi.get("/api/bank_account/").then(response => this.bankAccount = this.bankAccount.concat(response.data))
         },
         async uploadBill() {
-            let url = "http://127.0.0.1:8001/bill/import/";
 
-            // const response = await fetch(url, {
-            //     method: 'POST', // *GET, POST, PUT, DELETE, etc.
-            //     mode: 'no-cors', // no-cors, *cors, same-origin
-            //     cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-            //     credentials: 'same-origin', // include, *same-origin, omit
-            //     headers: {
-            //         'Content-Type': 'multipart/form-data', // 'application/json', 'application/x-www-form-urlencoded'
-            //     },
-            //     body: {
-            //         bill: this.files,
-            //         account: this.account
-            //     }
-            // });
-            // console.log(response)
+            const toUploadFiles = new FormData();
+            
+            console.log(this.files)
+            this.files.forEach((e, i) => {
+                console.log(e)
+            })
+            
+            toUploadFiles.append("files", 'files', this.files )
+            toUploadFiles.append("account", this.account)
+            console.log(this.account)
+            const response = await digitalBillApi.post("/import/", toUploadFiles, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                }
+            })
         },
         addFiles() {
             this.files = this.$refs.file.files;
@@ -66,7 +68,6 @@ export default defineComponent({
     },
     async created() {
         await this.getBankAccount();
-        console.log(this.bankAccount.forEach((a)=> {console.log(a)}));
     }
 })
 </script>

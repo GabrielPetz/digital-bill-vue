@@ -1,31 +1,35 @@
 <template>
-    <table id="result-table" class="table text-white">
-        <thead>
-            <th>Data/hora</th>
-            <th>Nome</th>
-            <th>Categoria</th>
-            <th>Origem</th>
-            <th>Valor</th>
-        </thead>
-        <tbody>
-            <tr v-for="expense in expenses" :key="expense.id">
-                <td>{{ formatDate(expense.date) }}</td>
-                <td>{{ expense.name }}</td>
-                <td>{{ expense.category.name }}</td>
-                <td>{{ expense.origin.name }}</td>
-                <td>{{ formatValue(expense.value) }}</td>
-            </tr>
-        </tbody>
-        <tfoot class="footer">
-            <tr>
-                <td>Total</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>{{ formatValue(statistics.total) }}</td>
-            </tr>
-        </tfoot>
-    </table>
+    <div class="round-border">
+
+        <table id="result-table" class="table text-white">
+            <thead>
+                <th>Data/hora</th>
+                <th>Nome</th>
+                <th>Categoria</th>
+                <th>Origem</th>
+                <th>Valor</th>
+            </thead>
+            <tbody>
+                <tr v-for="expense in expenses" :key="expense.id" class="t-row">
+                    <td>{{ formatDate(expense.date) }}</td>
+                    <td>{{ expense.name }}</td>
+                    <td>{{ expense.category.name }}</td>
+                    <td>{{ expense.origin.name }}</td>
+                    <td>{{ formatValue(expense.value) }}</td>
+                </tr>
+            </tbody>
+            <tfoot class="footer">
+                <tr>
+                    <td>Total</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>{{ formatValue(statistics.total) }}</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
 </template>
 
 <script>
@@ -67,5 +71,16 @@ export default defineComponent({
 
 .footer {
     font-weight: bold;
+}
+
+.t-row {
+    border: 0px solid white;
+    border-radius: 1rem;
+}
+
+.t-row:hover {
+    background-color: white;
+    color: black;
+    
 }
 </style>
